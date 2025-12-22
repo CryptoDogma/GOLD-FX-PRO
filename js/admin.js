@@ -100,7 +100,14 @@ async function toggleLicense(email) {
 async function setStrategy(strategy) {
   const secret = document.getElementById("secret").value;
 
-  if (!confirm(`Switch active strategy to ${strategy}?`)) return;
+  if (!secret) {
+    alert("Please enter the admin secret first");
+    return;
+  }
+
+  if (!confirm(`Switch active strategy to ${strategy.toUpperCase()}?`)) {
+    return;
+  }
 
   const res = await fetch(`${API}/admin/set-strategy`, {
     method: "POST",
@@ -112,7 +119,7 @@ async function setStrategy(strategy) {
   });
 
   if (!res.ok) {
-    alert("Failed to update strategy");
+    alert("Invalid admin secret or request failed");
     return;
   }
 
