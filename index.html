@@ -1,24 +1,100 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
   <title>GOLD FX PRO – Login</title>
+
   <script defer src="js/api.js"></script>
   <script defer src="js/auth.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at top, #0b1220, #020617);
+      color: #e5e7eb;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      background: #111827;
+      border: 1px solid #1f2937;
+      border-radius: 16px;
+      padding: 32px;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    }
+
+    h2 {
+      text-align: center;
+      color: #d4af37;
+      margin-bottom: 8px;
+    }
+
+    p.sub {
+      text-align: center;
+      font-size: 14px;
+      color: #9ca3af;
+      margin-bottom: 24px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 12px;
+      border-radius: 8px;
+      border: 1px solid #1f2937;
+      background: #020617;
+      color: white;
+      font-size: 14px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      font-weight: bold;
+      background: linear-gradient(90deg, #d4af37, #facc15);
+      color: #020617;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+
+    .link {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 14px;
+    }
+
+    .link a {
+      color: #93c5fd;
+      text-decoration: none;
+    }
+  </style>
 </head>
+
 <body>
 
-<h2>Login</h2>
+<div class="card">
+  <h2>GOLD FX PRO</h2>
+  <p class="sub">Professional Gold Trading Signals</p>
 
-<form id="loginForm">
-  <input type="email" id="email" placeholder="Email" required />
-  <input type="password" id="password" placeholder="Password" required />
-  <input type="text" id="license" placeholder="License Key" required />
-  <button type="submit">Login</button>
-</form>
+  <form id="loginForm">
+    <input type="email" id="email" placeholder="Email" required />
+    <input type="password" id="password" placeholder="Password" required />
+    <input type="text" id="license" placeholder="License Key" required />
+    <button type="submit">Login</button>
+  </form>
 
-<p>
-  No account? <a href="register.html">Register here</a>
-</p>
+  <div class="link">
+    No account? <a href="register.html">Register</a>
+  </div>
+</div>
 
 </body>
 </html>
