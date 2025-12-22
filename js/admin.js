@@ -87,4 +87,17 @@ async function toggle(email) {
   loadLicenses();
 }
 
+async function setStrategy(strategy) {
+  await fetch("/admin/set-strategy", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-admin-secret": ADMIN_SECRET
+    },
+    body: JSON.stringify({ strategy })
+  });
+
+  alert("Strategy switched to " + strategy);
+}
+
 document.getElementById("search").addEventListener("input", render);
