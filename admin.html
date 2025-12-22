@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>GOLD FX PRO – Admin</title>
+  <script defer src="js/api.js"></script>
+
+  <style>
+    body {
+      background: #020617;
+      color: #e5e7eb;
+      font-family: system-ui, sans-serif;
+      padding: 30px;
+    }
+
+    h2 {
+      color: #d4af37;
+    }
+
+    input, button {
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      margin-right: 6px;
+    }
+
+    input {
+      background: #111827;
+      color: white;
+      border: 1px solid #1f2937;
+      width: 280px;
+    }
+
+    button {
+      background: #2563eb;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .key {
+      margin-top: 14px;
+      padding: 10px;
+      background: #111827;
+      border-radius: 6px;
+      font-family: monospace;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>Admin – Activation Keys</h2>
+
+<input id="secret" placeholder="Admin Secret" />
+<button onclick="generate()">Generate Key</button>
+
+<div id="result"></div>
+
+<script>
+async function generate() {
+  const secret = document.getElementById("secret").value;
+
+  try {
+    const res = await fetch(
+      "https://goldfxpro-backend.onrender.com/admin/generate-activation",
+      {
+        method: "POST",
+        headers: {
+          "x-admin-secret": secret
+        }
+      }
+    );
+
+    if (!res.ok) throw new Error("Forbidden");
+
+    const data = await res.json();
+    document.getElementById("result").innerHTML =
+      `<div class="key">${data.code}</div>`;
+
+  } catch {
+    alert("Invalid admin secret");
+  }
+}
+</script>
+
+</body>
+</html>
