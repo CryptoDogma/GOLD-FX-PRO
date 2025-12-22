@@ -27,19 +27,23 @@ document.addEventListener("DOMContentLoaded", () => {
       const signal = await apiRequest("/api/signal", "GET", null, token);
 
       //History
-      async function loadHistory() {
+     async function loadHistory() {
   try {
     const history = await apiRequest("/api/history", "GET", null, token);
     const container = document.getElementById("history");
 
-  if (!history.length) {
+    if (!container) {
+      console.error("History container not found");
+      return;
+    }
+
+    if (!history || !history.length) {
       container.innerHTML = `
         <p style="color:#9ca3af; font-size:14px;">
           Signal history will appear here as new signals are generated.
-       </p>
-        `;
-          return;
-}
+        </p>`;
+      return;
+    }
 
     container.innerHTML = history.map(sig => `
       <div style="
@@ -50,18 +54,24 @@ document.addEventListener("DOMContentLoaded", () => {
         justify-content:space-between;
       ">
         <div>
-          <strong>${sig.direction}</strong> ${sig.pair} · ${sig.timeframe}<br/>
-          <span style="color:#9ca3af">${new Date(sig.timestamp).toLocaleString()}</span>
+          <strong style="color:${sig.direction === "BUY" ? "#22c55e" : "#ef4444"}">
+            ${sig.direction}
+          </strong>
+          ${sig.pair} · ${sig.timeframe}<br/>
+          <span style="color:#9ca3af">
+            ${new Date(sig.timestamp).toLocaleString()}
+          </span>
         </div>
         <div style="text-align:right">
-          <span>${sig.quality.grade} (${Math.round(sig.quality.score * 100)}%)</span><br/>
+          <strong>${sig.quality.grade}</strong>
+          (${Math.round(sig.quality.score * 100)}%)<br/>
           <span style="color:#9ca3af">${sig.session}</span>
         </div>
       </div>
     `).join("");
 
   } catch (err) {
-    console.error("History load error", err);
+    console.error("History load error:", err);
   }
 }
 
@@ -131,6 +141,7 @@ document.getElementById("refresh").onclick = () => {
   loadHistory();
 };
 });
+
 
 
 
