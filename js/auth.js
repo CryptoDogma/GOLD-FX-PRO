@@ -36,18 +36,22 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
 
     try {
-      const data = await apiRequest(
+      const response = await apiRequest(
         "/api/register",
         "POST",
         {
-          name: name.value,
-          email: email.value,
-          password: password.value,
-          activationCode: activationCode.value
+          name: document.getElementById("name").value,
+          email: document.getElementById("email").value,
+          password: document.getElementById("password").value,
+          activationCode: document.getElementById("activationCode").value
         }
       );
 
-      alert("Registration successful! Your license:\n" + data.license);
+      alert(
+        "Registration successful!\n\n" +
+        "Please check your email to verify your account."
+      );
+
       window.location.href = "index.html";
 
     } catch (err) {
