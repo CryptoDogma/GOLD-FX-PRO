@@ -126,8 +126,10 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = "index.html";
   };
 
+document.getElementById("refresh").onclick = () => {
   loadSignal();
   loadHistory();
+};
 });
 
 
