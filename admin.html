@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>GOLD FX PRO – Admin</title>
+  <meta charset="UTF-8">
+
+  <script defer src="js/admin.js"></script>
+
+  <style>
+    body {
+      background:#0b1220;
+      color:#e5e7eb;
+      font-family:system-ui;
+      padding:24px;
+    }
+
+    h2 { color:#d4af37; }
+
+    table {
+      width:100%;
+      border-collapse:collapse;
+      margin-top:20px;
+    }
+
+    th, td {
+      border-bottom:1px solid #1f2937;
+      padding:10px;
+      font-size:14px;
+    }
+
+    button {
+      padding:6px 10px;
+      border:none;
+      border-radius:6px;
+      font-weight:bold;
+      cursor:pointer;
+    }
+
+    .extend { background:#2563eb; color:white; }
+    .toggle { background:#ef4444; color:white; }
+  </style>
+</head>
+
+<body>
+
+<h2>Admin – License Manager</h2>
+
+<input id="secret" placeholder="Admin Secret" style="width:300px;padding:8px">
+<button onclick="loadLicenses()">Load Licenses</button>
+
+<table>
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th>License</th>
+      <th>Expires</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody id="list"></tbody>
+</table>
+
+</body>
+</html>
