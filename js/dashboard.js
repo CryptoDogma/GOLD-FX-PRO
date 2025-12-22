@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = "index.html";
     return;
   }
-  document.getElementById("strategy").textContent = signal.strategy;
 
   const AUTO_REFRESH_SECONDS = 300; // 5 minutes
 
@@ -140,11 +139,12 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.removeItem("token");
     window.location.href = "index.html";
   };
-
+document.getElementById("strategy").textContent = signal.strategy;
   // ─────────────────────────────────────────────
   // INITIAL LOAD
   loadSignal();
   loadHistory();
   startCooldown();
 });
+
 
