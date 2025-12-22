@@ -1,10 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
   const token = localStorage.getItem("token");
-
   if (!token) {
     window.location.href = "index.html";
     return;
   }
+
+  const AUTO_REFRESH_SECONDS = 300; // 5 minutes
 
   const directionEl = document.getElementById("direction");
   const pairEl = document.getElementById("pair");
@@ -21,16 +22,22 @@ document.addEventListener("DOMContentLoaded", () => {
   const qualityGradeEl = document.getElementById("qualityGrade");
   const qualityScoreEl = document.getElementById("qualityScore");
 
-  // 🔹 HISTORY
+  const refreshBtn = document.getElementById("refresh");
+  const cooldownEl = document.getElementById("cooldown");
+
+  let cooldown = 0;
+  let timer = null;
+
+  // ─────────────────────────────────────────────
+  // HISTORY
   async function loadHistory() {
     try {
       const container = document.getElementById("history");
       if (!container) return;
 
       const history = await apiRequest("/api/history", "GET", null, token);
-      console.log("History response:", history);
 
-      if (!Array.isArray(history) || history.length === 0) {
+      if (!history || !history.length) {
         container.innerHTML =
           "<p style='color:#9ca3af;font-size:14px;'>Signal history will appear here.</p>";
         return;
@@ -58,7 +65,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // 🔹 SIGNAL
+  // ─────────────────────────────────────────────
+  // SIGNAL
   async function loadSignal() {
     try {
       const signal = await apiRequest("/api/signal", "GET", null, token);
@@ -79,10 +87,10 @@ document.addEventListener("DOMContentLoaded", () => {
       reasoningEl.textContent = signal.reasoning;
 
       if (signal.analysis) {
-        trendStrengthEl.textContent = signal.analysis.trendStrength || "—";
-        trendAgeEl.textContent = signal.analysis.trendAge || "—";
-        volatilityEl.textContent = signal.analysis.volatility || "—";
-        qualityGradeEl.textContent = signal.analysis.qualityGrade || "—";
+        trendStrengthEl.textContent = signal.analysis.trendStrength;
+        trendAgeEl.textContent = signal.analysis.trendAge;
+        volatilityEl.textContent = signal.analysis.volatility;
+        qualityGradeEl.textContent = signal.analysis.qualityGrade;
         qualityScoreEl.textContent =
           Math.round(signal.analysis.qualityScore * 100) + "%";
       }
@@ -92,18 +100,49 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // 🔹 BUTTONS (ONLY ONE HANDLER)
-  document.getElementById("refresh").onclick = () => {
+  // ─────────────────────────────────────────────
+  // COOLDOWN TIMER
+  function startCooldown() {
+    cooldown = AUTO_REFRESH_SECONDS;
+    refreshBtn.disabled = true;
+
+    if (timer) clearInterval(timer);
+
+    timer = setInterval(() => {
+      cooldown--;
+
+      const mins = Math.floor(cooldown / 60);
+      const secs = cooldown % 60;
+      cooldownEl.textContent =
+        `Next update in ${mins}:${secs.toString().padStart(2, "0")}`;
+
+      if (cooldown <= 0) {
+        clearInterval(timer);
+        refreshBtn.disabled = false;
+        cooldownEl.textContent = "Updating…";
+        triggerRefresh();
+      }
+    }, 1000);
+  }
+
+  // ─────────────────────────────────────────────
+  // REFRESH HANDLER
+  function triggerRefresh() {
     loadSignal();
     loadHistory();
-  };
+    startCooldown();
+  }
+
+  refreshBtn.onclick = triggerRefresh;
 
   document.getElementById("logout").onclick = () => {
     localStorage.removeItem("token");
     window.location.href = "index.html";
   };
 
-  // 🔹 INITIAL LOAD
+  // ─────────────────────────────────────────────
+  // INITIAL LOAD
   loadSignal();
   loadHistory();
+  startCooldown();
 });
