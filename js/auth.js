@@ -35,16 +35,20 @@ document.addEventListener("DOMContentLoaded", () => {
   regForm.addEventListener("submit", async e => {
     e.preventDefault();
 
+    const payload = {
+      name: document.getElementById("name")?.value,
+      email: document.getElementById("email")?.value,
+      password: document.getElementById("password")?.value,
+      activationCode: document.getElementById("activationCode")?.value
+    };
+
+    console.log("REGISTER PAYLOAD:", payload);
+
     try {
-      const response = await apiRequest(
+      const res = await apiRequest(
         "/api/register",
         "POST",
-        {
-          name: document.getElementById("name").value,
-          email: document.getElementById("email").value,
-          password: document.getElementById("password").value,
-          activationCode: document.getElementById("activationCode").value
-        }
+        payload
       );
 
       alert(
