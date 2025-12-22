@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const AUTO_REFRESH_SECONDS = 300; // 5 minutes
-
+  const activeStrategyEl = document.getElementById("activeStrategy");
   const directionEl = document.getElementById("direction");
   const pairEl = document.getElementById("pair");
   const entryEl = document.getElementById("entry");
@@ -106,6 +106,12 @@ document.addEventListener("DOMContentLoaded", () => {
         qualityScoreEl.textContent = "—";
 
         if (strategyEl) strategyEl.textContent = signal.strategy || "—";
+
+        if (activeStrategyEl) {
+        activeStrategyEl.textContent = signal.strategy
+        ? signal.strategy.toUpperCase()
+        : "—";
+     }
         return;
       }
 
@@ -186,3 +192,4 @@ document.addEventListener("DOMContentLoaded", () => {
   loadHistory();
   startCooldown();
 });
+
