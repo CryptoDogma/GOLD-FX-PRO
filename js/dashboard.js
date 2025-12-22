@@ -140,7 +140,11 @@ document.getElementById("refresh").onclick = () => {
   loadSignal();
   loadHistory();
 };
+  loadSignal();
+  loadHistory();
+
 });
+
 
 
 
