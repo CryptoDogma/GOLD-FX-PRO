@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const volatilityEl = document.getElementById("volatility");
   const qualityGradeEl = document.getElementById("qualityGrade");
   const qualityScoreEl = document.getElementById("qualityScore");
+  const strategyEl = document.getElementById("strategy");
 
   const refreshBtn = document.getElementById("refresh");
   const cooldownEl = document.getElementById("cooldown");
@@ -53,8 +54,8 @@ document.addEventListener("DOMContentLoaded", () => {
             <span style="color:#9ca3af">${new Date(sig.timestamp).toLocaleString()}</span>
           </div>
           <div style="text-align:right">
-            <strong>${sig.quality.grade}</strong>
-            (${Math.round(sig.quality.score * 100)}%)<br/>
+            <strong>${sig.analysis.qualityGrade}</strong>
+            (${Math.round(sig.analysis.qualityScore * 100)}%)<br/>
             <span style="color:#9ca3af">${sig.session}</span>
           </div>
         </div>
@@ -71,6 +72,30 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const signal = await apiRequest("/api/signal", "GET", null, token);
 
+      // 🚫 NO TRADE / WAIT STATES
+      if (signal.status && signal.status !== "TRADE") {
+        directionEl.textContent = signal.status.replace("_", " ");
+        directionEl.className = "direction";
+        pairEl.textContent = "XAUUSD · M15";
+        reasoningEl.textContent = signal.reason || "No trade conditions met";
+
+        entryEl.textContent = "—";
+        slEl.textContent = "—";
+        tpEl.textContent = "—";
+        confidenceEl.textContent = "—";
+        sessionEl.textContent = signal.session || "—";
+
+        trendStrengthEl.textContent = "—";
+        trendAgeEl.textContent = "—";
+        volatilityEl.textContent = signal.volatility || "—";
+        qualityGradeEl.textContent = "—";
+        qualityScoreEl.textContent = "—";
+
+        if (strategyEl) strategyEl.textContent = signal.strategy || "—";
+        return;
+      }
+
+      // ✅ TRADE STATE
       directionEl.textContent = signal.direction;
       directionEl.className =
         "direction " + (signal.direction === "BUY" ? "buy" : "sell");
@@ -86,14 +111,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
       reasoningEl.textContent = signal.reasoning;
 
-      if (signal.analysis) {
-        trendStrengthEl.textContent = signal.analysis.trendStrength;
-        trendAgeEl.textContent = signal.analysis.trendAge;
-        volatilityEl.textContent = signal.analysis.volatility;
-        qualityGradeEl.textContent = signal.analysis.qualityGrade;
-        qualityScoreEl.textContent =
-          Math.round(signal.analysis.qualityScore * 100) + "%";
-      }
+      trendStrengthEl.textContent = signal.analysis.trendStrength;
+      trendAgeEl.textContent = signal.analysis.trendAge;
+      volatilityEl.textContent = signal.analysis.volatility;
+      qualityGradeEl.textContent = signal.analysis.qualityGrade;
+      qualityScoreEl.textContent =
+        Math.round(signal.analysis.qualityScore * 100) + "%";
+
+      if (strategyEl) strategyEl.textContent = signal.strategy;
 
     } catch (err) {
       console.error("Signal load error:", err);
@@ -126,7 +151,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ─────────────────────────────────────────────
-  // REFRESH HANDLER
   function triggerRefresh() {
     loadSignal();
     loadHistory();
@@ -139,12 +163,10 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.removeItem("token");
     window.location.href = "index.html";
   };
-document.getElementById("strategy").textContent = signal.strategy;
+
   // ─────────────────────────────────────────────
   // INITIAL LOAD
   loadSignal();
   loadHistory();
   startCooldown();
 });
-
-
