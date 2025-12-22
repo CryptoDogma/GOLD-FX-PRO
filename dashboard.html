@@ -2,14 +2,58 @@
 <html>
 <head>
   <title>Dashboard – GOLD FX PRO</title>
+  <script defer src="js/api.js"></script>
   <script defer src="js/dashboard.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0b1220;
+      color: #e5e7eb;
+      padding: 30px;
+    }
+
+    .card {
+      background: #111827;
+      border: 1px solid #1f2937;
+      border-radius: 10px;
+      padding: 20px;
+      max-width: 500px;
+      margin-bottom: 20px;
+    }
+
+    .signal {
+      font-size: 24px;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+
+    button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .logout {
+      background: #ef4444;
+      color: white;
+    }
+  </style>
 </head>
 <body>
 
-<h2>Dashboard</h2>
-<p>Welcome to GOLD FX PRO</p>
+<h2>GOLD FX PRO – Dashboard</h2>
 
-<button id="logout">Logout</button>
+<div class="card">
+  <h3>Market Signal</h3>
+  <div class="signal" id="signalText">No signal yet</div>
+  <div>Entry: <strong id="entry">-</strong></div>
+  <div>Take Profit: <strong id="tp">-</strong></div>
+  <div>Stop Loss: <strong id="sl">-</strong></div>
+</div>
+
+<button class="logout" id="logout">Logout</button>
 
 </body>
 </html>
