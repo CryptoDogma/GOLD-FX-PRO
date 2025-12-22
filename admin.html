@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>GOLD FX PRO – Admin</title>
   <meta charset="UTF-8">
+  <title>GOLD FX PRO – Admin</title>
 
   <script defer src="js/admin.js"></script>
 
@@ -14,7 +14,32 @@
       padding:24px;
     }
 
-    h2 { color:#d4af37; }
+    h2 { color:#d4af37; margin-bottom:10px; }
+
+    .topbar {
+      display:flex;
+      gap:10px;
+      margin-bottom:20px;
+    }
+
+    input {
+      padding:8px;
+      border-radius:6px;
+      border:none;
+      width:260px;
+    }
+
+    button {
+      padding:8px 12px;
+      border:none;
+      border-radius:6px;
+      font-weight:bold;
+      cursor:pointer;
+    }
+
+    .load { background:#2563eb; color:white; }
+    .extend { background:#22c55e; color:black; }
+    .toggle { background:#ef4444; color:white; }
 
     table {
       width:100%;
@@ -23,21 +48,33 @@
     }
 
     th, td {
-      border-bottom:1px solid #1f2937;
       padding:10px;
+      border-bottom:1px solid #1f2937;
       font-size:14px;
     }
 
-    button {
-      padding:6px 10px;
-      border:none;
-      border-radius:6px;
-      font-weight:bold;
-      cursor:pointer;
+    th {
+      text-align:left;
+      color:#9ca3af;
     }
 
-    .extend { background:#2563eb; color:white; }
-    .toggle { background:#ef4444; color:white; }
+    .badge {
+      padding:4px 8px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:bold;
+      display:inline-block;
+    }
+
+    .active { background:#22c55e; color:black; }
+    .expired { background:#f59e0b; color:black; }
+    .disabled { background:#ef4444; color:white; }
+
+    .muted { color:#9ca3af; font-size:12px; }
+
+    tr:hover {
+      background:#020617;
+    }
   </style>
 </head>
 
@@ -45,15 +82,18 @@
 
 <h2>Admin – License Manager</h2>
 
-<input id="secret" placeholder="Admin Secret" style="width:300px;padding:8px">
-<button onclick="loadLicenses()">Load Licenses</button>
+<div class="topbar">
+  <input id="secret" placeholder="Admin Secret">
+  <input id="search" placeholder="Search email…">
+  <button class="load" onclick="loadLicenses()">Load Licenses</button>
+</div>
 
 <table>
   <thead>
     <tr>
       <th>Email</th>
       <th>License</th>
-      <th>Expires</th>
+      <th>Expiry</th>
       <th>Status</th>
       <th>Actions</th>
     </tr>
