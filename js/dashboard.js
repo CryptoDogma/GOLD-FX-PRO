@@ -142,6 +142,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (strategyEl) strategyEl.textContent = signal.strategy ?? "—";
 
+      if (activeStrategyEl) {
+      activeStrategyEl.textContent = signal.strategy.toUpperCase();
+}
+
     } catch (err) {
       console.error("Signal load error:", err);
     }
@@ -192,4 +196,5 @@ document.addEventListener("DOMContentLoaded", () => {
   loadHistory();
   startCooldown();
 });
+
 
