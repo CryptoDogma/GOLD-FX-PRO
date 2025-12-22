@@ -1,19 +1,31 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   const token = localStorage.getItem("token");
 
-  // Protect dashboard
   if (!token) {
     window.location.href = "index.html";
     return;
   }
 
-  // Placeholder signal (UI only for now)
-  document.getElementById("signalText").textContent = "WAITING FOR SIGNAL";
-  document.getElementById("entry").textContent = "-";
-  document.getElementById("tp").textContent = "-";
-  document.getElementById("sl").textContent = "-";
+  try {
+    const signal = await apiRequest(
+      "/api/signal",
+      "GET",
+      null,
+      token
+    );
 
-  // Logout
+    document.getElementById("signalText").textContent =
+      `${signal.direction} ${signal.pair}`;
+
+    document.getElementById("entry").textContent = signal.entry;
+    document.getElementById("tp").textContent = signal.takeProfit;
+    document.getElementById("sl").textContent = signal.stopLoss;
+
+  } catch (err) {
+    document.getElementById("signalText").textContent =
+      "Unable to fetch signal";
+  }
+
   document.getElementById("logout").onclick = () => {
     localStorage.removeItem("token");
     window.location.href = "index.html";
