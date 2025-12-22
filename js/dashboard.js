@@ -15,50 +15,35 @@ document.addEventListener("DOMContentLoaded", () => {
   const confidenceEl = document.getElementById("confidence");
   const reasoningEl = document.getElementById("reasoning");
 
-  // Analysis elements
   const trendStrengthEl = document.getElementById("trendStrength");
   const trendAgeEl = document.getElementById("trendAge");
   const volatilityEl = document.getElementById("volatility");
   const qualityGradeEl = document.getElementById("qualityGrade");
   const qualityScoreEl = document.getElementById("qualityScore");
 
-  // ✅ HISTORY LOADER (CORRECT SCOPE)
+  // 🔹 HISTORY
   async function loadHistory() {
     try {
       const container = document.getElementById("history");
-      if (!container) {
-        console.error("History container not found");
-        return;
-      }
+      if (!container) return;
 
       const history = await apiRequest("/api/history", "GET", null, token);
       console.log("History response:", history);
 
       if (!Array.isArray(history) || history.length === 0) {
-        container.innerHTML = `
-          <p style="color:#9ca3af; font-size:14px;">
-            Signal history will appear here as new signals are generated.
-          </p>
-        `;
+        container.innerHTML =
+          "<p style='color:#9ca3af;font-size:14px;'>Signal history will appear here.</p>";
         return;
       }
 
       container.innerHTML = history.map(sig => `
-        <div style="
-          padding:10px;
-          border-bottom:1px solid #1f2937;
-          font-size:14px;
-          display:flex;
-          justify-content:space-between;
-        ">
+        <div style="padding:10px;border-bottom:1px solid #1f2937;display:flex;justify-content:space-between;font-size:14px;">
           <div>
             <strong style="color:${sig.direction === "BUY" ? "#22c55e" : "#ef4444"}">
               ${sig.direction}
             </strong>
             ${sig.pair} · ${sig.timeframe}<br/>
-            <span style="color:#9ca3af">
-              ${new Date(sig.timestamp).toLocaleString()}
-            </span>
+            <span style="color:#9ca3af">${new Date(sig.timestamp).toLocaleString()}</span>
           </div>
           <div style="text-align:right">
             <strong>${sig.quality.grade}</strong>
@@ -73,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // ✅ SIGNAL LOADER
+  // 🔹 SIGNAL
   async function loadSignal() {
     try {
       const signal = await apiRequest("/api/signal", "GET", null, token);
@@ -99,27 +84,15 @@ document.addEventListener("DOMContentLoaded", () => {
         volatilityEl.textContent = signal.analysis.volatility || "—";
         qualityGradeEl.textContent = signal.analysis.qualityGrade || "—";
         qualityScoreEl.textContent =
-          signal.analysis.qualityScore != null
-            ? Math.round(signal.analysis.qualityScore * 100) + "%"
-            : "—";
-      } else {
-        trendStrengthEl.textContent = "—";
-        trendAgeEl.textContent = "—";
-        volatilityEl.textContent = "—";
-        qualityGradeEl.textContent = "—";
-        qualityScoreEl.textContent = "—";
+          Math.round(signal.analysis.qualityScore * 100) + "%";
       }
 
     } catch (err) {
       console.error("Signal load error:", err);
-
-      directionEl.textContent = "NO SIGNAL";
-      directionEl.className = "direction";
-      reasoningEl.textContent = "Unable to fetch signal at this time.";
     }
   }
 
-  // Buttons
+  // 🔹 BUTTONS (ONLY ONE HANDLER)
   document.getElementById("refresh").onclick = () => {
     loadSignal();
     loadHistory();
@@ -130,7 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = "index.html";
   };
 
-  // Initial load
+  // 🔹 INITIAL LOAD
   loadSignal();
   loadHistory();
 });
