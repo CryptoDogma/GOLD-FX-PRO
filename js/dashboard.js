@@ -26,6 +26,41 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const signal = await apiRequest("/api/signal", "GET", null, token);
 
+      //History
+      async function loadHistory() {
+  try {
+    const history = await apiRequest("/api/history", "GET", null, token);
+    const container = document.getElementById("history");
+
+    if (!history.length) {
+      container.innerHTML = "<p style='color:#9ca3af'>No history yet.</p>";
+      return;
+    }
+
+    container.innerHTML = history.map(sig => `
+      <div style="
+        padding:10px;
+        border-bottom:1px solid #1f2937;
+        font-size:14px;
+        display:flex;
+        justify-content:space-between;
+      ">
+        <div>
+          <strong>${sig.direction}</strong> ${sig.pair} · ${sig.timeframe}<br/>
+          <span style="color:#9ca3af">${new Date(sig.timestamp).toLocaleString()}</span>
+        </div>
+        <div style="text-align:right">
+          <span>${sig.quality.grade} (${Math.round(sig.quality.score * 100)}%)</span><br/>
+          <span style="color:#9ca3af">${sig.session}</span>
+        </div>
+      </div>
+    `).join("");
+
+  } catch (err) {
+    console.error("History load error", err);
+  }
+}
+
       // Direction
       directionEl.textContent = signal.direction;
       directionEl.className =
@@ -87,5 +122,9 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = "index.html";
   };
 
+document.getElementById("refresh").onclick = () => {
   loadSignal();
+  loadHistory();
+};
 });
+
