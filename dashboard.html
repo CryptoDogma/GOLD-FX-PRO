@@ -36,13 +36,8 @@
       margin-bottom: 8px;
     }
 
-    .buy {
-      color: #22c55e;
-    }
-
-    .sell {
-      color: #ef4444;
-    }
+    .buy { color: #22c55e; }
+    .sell { color: #ef4444; }
 
     .pair {
       color: #9ca3af;
@@ -98,6 +93,16 @@
       color: #cbd5f5;
     }
 
+    .analysis {
+      background: #020617;
+      border-left: 4px solid #2563eb;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      margin-top: 12px;
+      color: #cbd5f5;
+    }
+
     .actions {
       margin-top: 20px;
       display: flex;
@@ -129,6 +134,7 @@
 <h2>GOLD FX PRO – Market Dashboard</h2>
 
 <div class="card">
+
   <div id="direction" class="direction">—</div>
   <div id="pair" class="pair">—</div>
 
@@ -152,28 +158,31 @@
     <div>Confidence: <span class="confidence" id="confidence">—</span></div>
   </div>
 
-  <div class="reasoning" id="reasoning">
-    <div class="analysis" style="margin-top:12px;">
-  <div class="meta">
-    <div>Trend: <strong id="trendStrength">—</strong></div>
-    <div>Age: <strong id="trendAge">—</strong></div>
-    <div>Volatility: <strong id="volatility">—</strong></div>
-  </div>
-  <div class="meta">
-    <div>Trade Quality:
-      <strong id="qualityGrade">—</strong>
-      (<span id="qualityScore">—</span>)
+  <!-- Reasoning -->
+  <div class="reasoning" id="reasoning">—</div>
+
+  <!-- Analysis -->
+  <div class="analysis">
+    <div class="meta">
+      <div>Trend: <strong id="trendStrength">—</strong></div>
+      <div>Age: <strong id="trendAge">—</strong></div>
+      <div>Volatility: <strong id="volatility">—</strong></div>
     </div>
-  </div>
-</div>
+    <div class="meta">
+      <div>
+        Trade Quality:
+        <strong id="qualityGrade">—</strong>
+        (<span id="qualityScore">—</span>)
+      </div>
+    </div>
   </div>
 
   <div class="actions">
     <button class="refresh" id="refresh">Refresh Signal</button>
     <button class="logout" id="logout">Logout</button>
   </div>
+
 </div>
 
 </body>
 </html>
-
