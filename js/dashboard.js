@@ -32,10 +32,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const history = await apiRequest("/api/history", "GET", null, token);
     const container = document.getElementById("history");
 
-    if (!history.length) {
-      container.innerHTML = "<p style='color:#9ca3af'>No history yet.</p>";
-      return;
-    }
+  if (!history.length) {
+      container.innerHTML = `
+        <p style="color:#9ca3af; font-size:14px;">
+          Signal history will appear here as new signals are generated.
+       </p>
+        `;
+          return;
+}
 
     container.innerHTML = history.map(sig => `
       <div style="
@@ -127,4 +131,5 @@ document.getElementById("refresh").onclick = () => {
   loadHistory();
 };
 });
+
 
