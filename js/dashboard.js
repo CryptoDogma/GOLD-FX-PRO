@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let timer = null;
 
   // ─────────────────────────────────────────────
-  // HISTORY
+  // HISTORY (BACKWARD-COMPATIBLE)
   async function loadHistory() {
     try {
       const container = document.getElementById("history");
@@ -38,28 +38,42 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const history = await apiRequest("/api/history", "GET", null, token);
 
-      if (!history || !history.length) {
+      if (!Array.isArray(history) || history.length === 0) {
         container.innerHTML =
           "<p style='color:#9ca3af;font-size:14px;'>Signal history will appear here.</p>";
         return;
       }
 
-      container.innerHTML = history.map(sig => `
-        <div style="padding:10px;border-bottom:1px solid #1f2937;display:flex;justify-content:space-between;font-size:14px;">
-          <div>
-            <strong style="color:${sig.direction === "BUY" ? "#22c55e" : "#ef4444"}">
-              ${sig.direction}
-            </strong>
-            ${sig.pair} · ${sig.timeframe}<br/>
-            <span style="color:#9ca3af">${new Date(sig.timestamp).toLocaleString()}</span>
+      container.innerHTML = history.map(sig => {
+        const grade =
+          sig.analysis?.qualityGrade ??
+          sig.quality?.grade ??
+          "—";
+
+        const score =
+          sig.analysis?.qualityScore ??
+          sig.quality?.score ??
+          null;
+
+        return `
+          <div style="padding:10px;border-bottom:1px solid #1f2937;display:flex;justify-content:space-between;font-size:14px;">
+            <div>
+              <strong style="color:${sig.direction === "BUY" ? "#22c55e" : "#ef4444"}">
+                ${sig.direction}
+              </strong>
+              ${sig.pair} · ${sig.timeframe}<br/>
+              <span style="color:#9ca3af">
+                ${new Date(sig.timestamp).toLocaleString()}
+              </span>
+            </div>
+            <div style="text-align:right">
+              <strong>${grade}</strong>
+              ${score !== null ? `(${Math.round(score * 100)}%)` : ""}<br/>
+              <span style="color:#9ca3af">${sig.session}</span>
+            </div>
           </div>
-          <div style="text-align:right">
-            <strong>${sig.analysis.qualityGrade}</strong>
-            (${Math.round(sig.analysis.qualityScore * 100)}%)<br/>
-            <span style="color:#9ca3af">${sig.session}</span>
-          </div>
-        </div>
-      `).join("");
+        `;
+      }).join("");
 
     } catch (err) {
       console.error("History load error:", err);
@@ -111,14 +125,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
       reasoningEl.textContent = signal.reasoning;
 
-      trendStrengthEl.textContent = signal.analysis.trendStrength;
-      trendAgeEl.textContent = signal.analysis.trendAge;
-      volatilityEl.textContent = signal.analysis.volatility;
-      qualityGradeEl.textContent = signal.analysis.qualityGrade;
+      trendStrengthEl.textContent = signal.analysis?.trendStrength ?? "—";
+      trendAgeEl.textContent = signal.analysis?.trendAge ?? "—";
+      volatilityEl.textContent = signal.analysis?.volatility ?? "—";
+      qualityGradeEl.textContent = signal.analysis?.qualityGrade ?? "—";
       qualityScoreEl.textContent =
-        Math.round(signal.analysis.qualityScore * 100) + "%";
+        signal.analysis?.qualityScore != null
+          ? Math.round(signal.analysis.qualityScore * 100) + "%"
+          : "—";
 
-      if (strategyEl) strategyEl.textContent = signal.strategy;
+      if (strategyEl) strategyEl.textContent = signal.strategy ?? "—";
 
     } catch (err) {
       console.error("Signal load error:", err);
