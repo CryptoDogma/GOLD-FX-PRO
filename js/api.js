@@ -6,7 +6,7 @@ async function apiRequest(path, method = "GET", body = null, token = null) {
   };
 
   if (token) {
-    headers["Authorization"] = token;
+    headers["Authorization"] = `Bearer ${token}`;
   }
 
   const response = await fetch(API_BASE + path, {
@@ -23,3 +23,4 @@ async function apiRequest(path, method = "GET", body = null, token = null) {
 
   return JSON.parse(text);
 }
+
