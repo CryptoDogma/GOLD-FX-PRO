@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
         pairEl.textContent = "XAUUSD · M15";
        reasoningEl.textContent =
       signal.reasoning +
-      "\n\n⚠️ Educational trade plan by GOLD FX PRO. Risk applies.";
+      "⚠️ Educational trade plan by GOLD FX PRO. Risk applies.";
 
         entryEl.textContent = "—";
         slEl.textContent = "—";
@@ -194,6 +194,7 @@ document.addEventListener("DOMContentLoaded", () => {
   loadHistory();
   startCooldown();
 });
+
 
 
 
