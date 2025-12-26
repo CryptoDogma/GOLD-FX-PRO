@@ -2,14 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  
-  <div class="meta" style="margin-bottom:8px;">
-  <div>
-    Active Strategy:
-    <strong id="activeStrategy">—</strong>
-  </div>
-</div>
-
   <title>GOLD FX PRO – Dashboard</title>
 
   <script defer src="js/api.js"></script>
@@ -25,7 +17,7 @@
     }
 
     h2 {
-      margin-bottom: 20px;
+      margin-bottom: 12px;
       color: #d4af37;
     }
 
@@ -115,6 +107,7 @@
       margin-top: 20px;
       display: flex;
       justify-content: space-between;
+      align-items: center;
     }
 
     button {
@@ -134,12 +127,24 @@
       background: #ef4444;
       color: white;
     }
+
+    .top-meta {
+      margin-bottom: 12px;
+      font-size: 14px;
+      color: #9ca3af;
+    }
   </style>
 </head>
 
 <body>
 
 <h2>GOLD FX PRO – Market Dashboard</h2>
+
+<!-- ACTIVE STRATEGY -->
+<div class="top-meta">
+  Active Strategy:
+  <strong id="activeStrategy">—</strong>
+</div>
 
 <!-- MAIN SIGNAL CARD -->
 <div class="card">
@@ -186,7 +191,7 @@
 
   <div class="actions">
     <button class="refresh" id="refresh">Refresh Signal</button>
-    <span id="cooldown" style="color:#9ca3af;font-size:13px;align-self:center;"></span>
+    <span id="cooldown" style="color:#9ca3af;font-size:13px;"></span>
     <button class="logout" id="logout">Logout</button>
   </div>
 
@@ -200,6 +205,3 @@
 
 </body>
 </html>
-
-
-
