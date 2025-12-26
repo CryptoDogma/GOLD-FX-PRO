@@ -1,34 +1,36 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // ─────────────────────────────────────────────
+  // LOGIN
   const form = document.getElementById("loginForm");
-  if (!form) return;
+  if (form) {
+    form.addEventListener("submit", async e => {
+      e.preventDefault();
 
-  form.addEventListener("submit", async e => {
-    e.preventDefault();
+      try {
+        const data = await apiRequest(
+          "/api/login",
+          "POST",
+          {
+            email: email.value,
+            password: password.value,
+            license: license.value
+          }
+        );
 
-    try {
-      const data = await apiRequest(
-        "/api/login",
-        "POST",
-        {
-          email: email.value,
-          password: password.value,
-          license: license.value
-        }
-      );
+        // Save JWT
+        localStorage.setItem("token", data.token);
 
-      // Save JWT
-      localStorage.setItem("token", data.token);
+        // Go to dashboard
+        window.location.href = "dashboard.html";
 
-      // Go to dashboard
-      window.location.href = "dashboard.html";
+      } catch (err) {
+        alert("Login failed: " + err.message);
+      }
+    });
+  }
 
-    } catch (err) {
-      alert("Login failed: " + err.message);
-    }
-	
-  });
-});
-document.addEventListener("DOMContentLoaded", () => {
+  // ─────────────────────────────────────────────
+  // REGISTER
   const regForm = document.getElementById("registerForm");
   if (!regForm) return;
 
@@ -39,7 +41,12 @@ document.addEventListener("DOMContentLoaded", () => {
       name: document.getElementById("name")?.value,
       email: document.getElementById("email")?.value,
       password: document.getElementById("password")?.value,
-      activationCode: document.getElementById("activationCode")?.value
+      activationCode: document.getElementById("activationCode")?.value,
+
+      // ✅ NEW FIELDS
+      phone: document.getElementById("phone")?.value || null,
+      whatsappOptIn:
+        document.getElementById("whatsappOptIn")?.checked || false
     };
 
     console.log("REGISTER PAYLOAD:", payload);
@@ -53,7 +60,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       alert(
         "Registration successful!\n\n" +
-        "Please check your email to verify your account."
+        "Your account has been activated.\n" +
+        "You may now log in."
       );
 
       window.location.href = "index.html";
