@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  const AUTO_REFRESH_SECONDS = 60; // 1 minutes
+  const AUTO_REFRESH_SECONDS = 300; // 5 minutes
 
   const activeStrategyEl = document.getElementById("activeStrategy");
   const directionEl = document.getElementById("direction");
@@ -192,4 +192,5 @@ document.addEventListener("DOMContentLoaded", () => {
   loadHistory();
   startCooldown();
 });
+
 
